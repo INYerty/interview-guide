@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { questions as allQuestions } from '@/data/questions';
 import { evaluateAnswer } from '@/services/aiService';
 import { Category, Question, AIFeedback } from '@/types';
@@ -25,7 +26,6 @@ export default function InterviewPage() {
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [startTime, setStartTime] = useState(0);
   const [submittedFeedback, setSubmittedFeedback] = useState<AIFeedback | null>(null);
   const [submittedScore, setSubmittedScore] = useState<number | null>(null);
 
@@ -52,7 +52,6 @@ export default function InterviewPage() {
     setSubmittedFeedback(null);
     setSubmittedScore(null);
     setTimeLeft(shuffled[0]?.timeLimit ?? 300);
-    setStartTime(Date.now());
     setPhase('interviewing');
   };
 
@@ -84,7 +83,6 @@ export default function InterviewPage() {
       setSubmittedFeedback(null);
       setSubmittedScore(null);
       setTimeLeft(sessionQuestions[nextIdx].timeLimit);
-      setStartTime(Date.now());
     }
   };
 
@@ -373,12 +371,12 @@ export default function InterviewPage() {
         >
           🔄 重新开始
         </button>
-        <a
+        <Link
           href="/questions"
           className="flex-1 py-3.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold rounded-xl transition-all text-center"
         >
           📚 前往题库练习
-        </a>
+        </Link>
       </div>
     </div>
   );

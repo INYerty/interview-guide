@@ -51,7 +51,7 @@ export default function DashboardPage() {
           { label: '练习场次', value: mockSessions.length, icon: '🎯', sub: '累计练习' },
           { label: '平均分', value: avgScore, icon: '📊', sub: '综合得分' },
           { label: '最强分类', value: bestCategory.category, icon: '🏆', sub: `${bestCategory.score} 分` },
-          { label: '总时长', value: '140 分钟', icon: '⏱', sub: '学习时长' },
+          { label: '薄弱分类', value: weakCategory?.category ?? '-', icon: '📌', sub: weakCategory ? `${weakCategory.score} 分` : '' },
         ].map((stat) => (
           <div
             key={stat.label}

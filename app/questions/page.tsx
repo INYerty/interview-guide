@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { questions } from '@/data/questions';
 import { Category, Difficulty } from '@/types';
 import QuestionCard from '@/components/QuestionCard';
@@ -9,19 +10,16 @@ const allCategories: Category[] = ['算法', '系统设计', '行为面试', '�
 const allDifficulties: Difficulty[] = ['Easy', 'Medium', 'Hard'];
 const difficultyLabels: Record<Difficulty, string> = { Easy: '简单', Medium: '中等', Hard: '困难' };
 
-export default function QuestionsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all');
+function QuestionsContent() {
+  const searchParams = useSearchParams();
+  const initialCategory = (() => {
+    const cat = searchParams.get('category') as Category | null;
+    return cat && allCategories.includes(cat) ? cat : 'all';
+  })();
+
+  const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>(initialCategory);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Read category from URL on mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const cat = params.get('category') as Category | null;
-    if (cat && allCategories.includes(cat)) {
-      setSelectedCategory(cat);
-    }
-  }, []);
 
   const filtered = questions.filter((q) => {
     const catMatch = selectedCategory === 'all' || q.category === selectedCategory;
@@ -151,5 +149,13 @@ export default function QuestionsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuestionsPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-10 text-gray-400">加载中...</div>}>
+      <QuestionsContent />
+    </Suspense>
   );
 }
