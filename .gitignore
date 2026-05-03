@@ -22,3 +22,10 @@ GEMINI.md
 
 # Playwright MCP
 .playwright-mcp/
+
+
+# 忽略application.yml application-test.yml .env .env.example
+application-test.yml
+.env
+.env.example
+application.yml
