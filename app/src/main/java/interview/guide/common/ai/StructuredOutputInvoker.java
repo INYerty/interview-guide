@@ -71,6 +71,7 @@ public class StructuredOutputInvoker {
         String securedSystemPrompt = systemPromptWithFormat
             + PromptSecurityConstants.ANTI_INJECTION_INSTRUCTION;
         Exception lastError = null;
+        // 首次尝试 加系统提示词以及防止prompt注入提示词,当尝试次数大于1的时候则会拼接系统提示词+错误信息
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
             String attemptSystemPrompt = attempt == 1
                 ? securedSystemPrompt
