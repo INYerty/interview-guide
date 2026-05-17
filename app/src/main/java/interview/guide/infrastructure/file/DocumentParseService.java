@@ -55,7 +55,7 @@ public class DocumentParseService {
         try (InputStream inputStream = file.getInputStream()) {
             String content = parseContent(inputStream);
             String cleanedContent = textCleaningService.cleanText(content);
-            log.info("文件解析成功，提取文本长度: {} 字符", cleanedContent.length());
+            log.info("文件解析成功，提取前文本长度: {},提取后文本长度: {} 字符",content.length() , cleanedContent.length());
             return cleanedContent;
         } catch (IOException | TikaException | SAXException e) {
             log.error("文件解析失败: {}", e.getMessage(), e);
